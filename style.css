@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+
+
+*, h1, h2, h3, [class*="css"] {
+    text-align:center;
+    font-family:"Manrope"
+}
+
+img {
+  border-radius: 3%;
+}
+
+.circle-image {
+  border-radius:50%;
+  width:100%;
+}
+
+span, small, li {
+  font-weight:600;
+}
+
+[data-testid="stBaseButton-secondary"] {
+    font-weight:600;
+}
+
+h5 {
+  color:#515461;
+}
+
+[data-testid="stSliderTickBarMin"] {
+  font-family:"Manrope", sans-serif;
+}
+
+[data-testid="stSliderThumbValue"] {
+  font-family:"Manrope", sans-serif;
+}
+
+[data-testid="stSliderTickBarMax"] {
+  font-family:"Manrope", sans-serif;
+}
