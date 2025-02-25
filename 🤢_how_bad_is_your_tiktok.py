@@ -180,7 +180,7 @@ def update_checkbox():
 
 # st.image("https://i.postimg.cc/BnLW2WLk/favicon.png", width=100)
 st.title("how bad is your tiktok?")
-
+st.divider()
 
 
 st.subheader("📂 download your data:")
