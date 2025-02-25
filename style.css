@@ -40,3 +40,9 @@ h5 {
 [data-testid="stSliderTickBarMax"] {
   font-family:"Manrope", sans-serif;
 }
+
+[data-testid="stHeaderActionElements"] {
+  display: none;
+}
+
+.css-15zrgzn {display: none}
