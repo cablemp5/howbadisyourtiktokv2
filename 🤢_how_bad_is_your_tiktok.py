@@ -23,7 +23,7 @@ st.set_page_config(
     page_title="how bad is your tiktok?",
     page_icon="🤢",
     initial_sidebar_state='collapsed',
-    menu_items={"Get help":"https://github.com/cablemp5/how-bad-is-your-tiktok","Report a Bug":"https://github.com/cablemp5/how-bad-is-your-tiktok/issues","About":"This is the about section"}
+    menu_items={"Get help":"https://github.com/cablemp5/howbadisyourtiktokv2","Report a Bug":"https://github.com/cablemp5/howbadisyourtiktokv2/issues","About":"##Created by Caleb Collins"}
 )
 
 with open( "style.css" ) as css:
