@@ -218,8 +218,7 @@ if st.button(label="**🚀 judge my feed**", use_container_width=True,
     st.error("**💥 you haven't uploaded a file!**")
   else:
     zip_file = BytesIO(uploaded_file.getvalue())
-
-    selection = ['Liked']
+    selection = ['Liked','Saved']
 
     num_links_to_parse = to_parse
     num_links_to_analyze = to_analyze

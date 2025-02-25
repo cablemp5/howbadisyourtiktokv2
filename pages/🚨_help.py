@@ -6,7 +6,7 @@ with open( "style.css" ) as css:
 st.title("🚨 help")
 
 st.error(
-    'The website will use the testing/demo key by default. If you receive a :green[429 RESOURCE_EXHAUSTED] error, please create and use your own key! To use your own key toggle the "Use the testing/demo Gemini API key" box and proceed with the below instructions')
+    'The website will use the testing/demo key by default. If you receive a :green[429 RESOURCE_EXHAUSTED] error, please create and use your own key! To use your own key go to version 1 (**here**)[https://howbadisyourtiktokv1.streamlit.app/] and toggle the "Use the testing/demo Gemini API key" box and proceed with the below instructions')
 st.subheader("**generating a gemini API key:**")
 st.write(
     "1\. Sign in with your Google account and create and your Gemini API key [here](https://aistudio.google.com/app/apikey)")
