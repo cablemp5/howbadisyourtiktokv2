@@ -17,7 +17,7 @@ num_items_to_show = 0
 TAG_IGNORE = ["#fyp", "#viral", "#foryou", "fy", "#foryoupage", "#trending",
               "#fyp", "#fypシ゚viral", "#fypシ", "#blowthisup",
               "#fyppppppppppppppppppppppp", "#fy", "#fypage", "#viralvideo",
-              "#xyzbca"]
+              "#xyzbca","#tiktok","#foru"]
 
 st.set_page_config(
     page_title="how bad is your tiktok?",
@@ -212,10 +212,20 @@ with st.popover("**settings**", icon="⚙️",
                       min_value=3, max_value=100, value=20,
                       help="Default: 20 hashtags/users (up to 100)")
 
+  selection = st.pills(
+      "**Select the type of videos to scan**:",
+      options=["Saved", "Liked"],
+      default=["Saved","Liked"],
+      selection_mode='multi',
+      help="most accurate with only **saved** videos. Use **liked** when there isn't a large amount of saved videos to scan"
+  )
+
 if st.button(label="**🚀 judge my feed**", use_container_width=True,
                type="secondary"):
   if uploaded_file is None:
     st.error("**💥 you haven't uploaded a file!**")
+  elif not selection:
+    st.error("**💥 you must select at least 1 type of video to scan!**")
   else:
     if not re.match(r"TikTok_Data_\d{10}\.zip$", uploaded_file.name):
       st.error("**💥 invalid file name! the file must follow the format :green[TikTok_Data_XXXXXXXXXX.zip]**")
@@ -227,8 +237,6 @@ if st.button(label="**🚀 judge my feed**", use_container_width=True,
           if 'user_data_tiktok.json' not in z.namelist():
             st.error("**❌ the .zip file is missing :green[user_data_tiktok.json]!**")
           else:
-            selection = ['Liked','Saved']
-
             num_links_to_parse = to_parse
             num_links_to_analyze = to_analyze
             num_items_to_show = to_show
