@@ -217,123 +217,134 @@ if st.button(label="**🚀 judge my feed**", use_container_width=True,
   if uploaded_file is None:
     st.error("**💥 you haven't uploaded a file!**")
   else:
-    zip_file = BytesIO(uploaded_file.getvalue())
-    selection = ['Liked','Saved']
-
-    num_links_to_parse = to_parse
-    num_links_to_analyze = to_analyze
-    num_items_to_show = to_show
-
-    st.divider()
-
-    st_progress_bar = st.progress(0)
-
-
-    username_dict, hashtag_dict, pfp_dict, gemini_response = on_upload(
-      zip_file,
-      selection,
-      st_progress_bar=st_progress_bar)
-
-
-    hashtags_to_show = list(hashtag_dict.keys())[:num_items_to_show]
-    hashtag_counts_to_show = [str(hashtag_dict[hashtag]) for hashtag in
-                              hashtags_to_show]
-
-    df1 = pd.DataFrame(
-        list(zip(hashtags_to_show, hashtag_counts_to_show)),
-        columns=["#", "number of videos"]
-    )
-
-    users_to_show = list(username_dict.keys())[:num_items_to_show]
-    avatars_to_show = [pfp_dict.get(user, "") for user in users_to_show]
-    numvideos_to_show = [str(username_dict[user]) for user in users_to_show]
-    links_to_show = ["https://www.tiktok.com/" + user for user in
-                     users_to_show]
-
-    df2 = pd.DataFrame(
-        list(zip(avatars_to_show, users_to_show, numvideos_to_show,
-                 links_to_show)),
-        columns=["avatar", "username", "# of videos", "link"]
-    )
-
-
-
-
-    st.header("**most frequent hashtags:**")
-
-    col1a,col2a,col3a = st.columns([0.33,0.33,0.33])
-    # col1a.subheader(f"🥇")
-    # col2a.subheader(f"🥈")
-    # col3a.subheader(f"🥉")
-    col1a.subheader(f"🥇:gray[{hashtags_to_show[0]}]")
-    col2a.subheader(f"🥈:gray[{hashtags_to_show[1]}]")
-    col3a.subheader(f"🥉:gray[{hashtags_to_show[2]}]")
-    col1a.write(f"**{hashtag_counts_to_show[0]} videos**")
-    col2a.write(f"**{hashtag_counts_to_show[1]} videos**")
-    col3a.write(f"**{hashtag_counts_to_show[2]} videos**")
-
-    st.write("&nbsp;")
-
-    st.dataframe(df1, hide_index=True, use_container_width=True)
-
-    st.divider()
-
-    st.header("**most frequent users:**")
-
-    col1,col2,col3 = st.columns(3)
-    col1.markdown('''
-    <a href="''' + links_to_show[0] +'''">
-    <img class="circle-image" src="''' + avatars_to_show[0] + ''''">
-    </a>''',unsafe_allow_html=True,
-    )
-    col2.markdown('''
-    <a href="''' + links_to_show[1] +'''">
-    <img class="circle-image" src="''' + avatars_to_show[1] + ''''">
-    </a>''',unsafe_allow_html=True,
-                  )
-    col3.markdown('''
-    <a href="''' + links_to_show[2] +'''">
-    <img class="circle-image" src="''' + avatars_to_show[2] + ''''">
-    </a>''',unsafe_allow_html=True,
-    )
-
-    col1.subheader(f"🥇:gray[{users_to_show[0]}]")
-    col2.subheader(f"🥈:gray[{users_to_show[1]}]")
-    col3.subheader(f"🥉:gray[{users_to_show[2]}]")
-    # col1.markdown('''
-    # <h4>🥇'''+
-    #               users_to_show[0] + '''
-    # </h4>''',unsafe_allow_html=True,
-    #               )
-    # col2.markdown('''
-    # <h4>🥈'''+
-    #               users_to_show[1] + '''
-    # </h4>''',unsafe_allow_html=True,
-    #               )
-    # col3.markdown('''
-    # <h4>🥉'''+
-    #               users_to_show[2] + '''
-    # </h4>''',unsafe_allow_html=True,
-    #               )
-    col1.write(f"**{numvideos_to_show[0]} videos**")
-    col2.write(f"**{numvideos_to_show[1]} videos**")
-    col3.write(f"**{numvideos_to_show[2]} videos**")
-
-    st.write(" ")
-
-
-    st.dataframe(df2, hide_index=True,
-                 column_config={"link": st.column_config.LinkColumn("Link"),
-                                "avatar": st.column_config.ImageColumn()},
-                 use_container_width=True)
-
-    st.divider()
-
-    if isinstance(gemini_response, Exception):
-      st.error(
-          f'**👾 there was an unexpected error generating your AI analysis. check the "help" section for more info:**\n\n:red[`{str(gemini_response)}`]')
+    if not re.match(r"TikTok_Data_\d{10}\.zip$", uploaded_file.name):
+      st.error("**💥 invalid file name! the file must follow the format :green[TikTok_Data_XXXXXXXXXX.zip]**")
     else:
-      st.header("**🖨️ ai analysis:**")
-      prefix = "\> "
-      formatted_response = re.sub(r'(^|\n\n)(\S)', rf'\1{prefix}\2', gemini_response)
-      st.write_stream(stream_data(formatted_response))
+      zip_file = BytesIO(uploaded_file.getvalue())
+
+      try:
+        with zipfile.ZipFile(zip_file, 'r') as z:
+          if 'user_data_tiktok.json' not in z.namelist():
+            st.error("**❌ the .zip file is missing :green[user_data_tiktok.json]!**")
+          else:
+            selection = ['Liked','Saved']
+
+            num_links_to_parse = to_parse
+            num_links_to_analyze = to_analyze
+            num_items_to_show = to_show
+
+            st.divider()
+
+            st_progress_bar = st.progress(0)
+
+
+            username_dict, hashtag_dict, pfp_dict, gemini_response = on_upload(
+              zip_file,
+              selection,
+              st_progress_bar=st_progress_bar)
+
+
+            hashtags_to_show = list(hashtag_dict.keys())[:num_items_to_show]
+            hashtag_counts_to_show = [str(hashtag_dict[hashtag]) for hashtag in
+                                      hashtags_to_show]
+
+            df1 = pd.DataFrame(
+                list(zip(hashtags_to_show, hashtag_counts_to_show)),
+                columns=["#", "number of videos"]
+            )
+
+            users_to_show = list(username_dict.keys())[:num_items_to_show]
+            avatars_to_show = [pfp_dict.get(user, "") for user in users_to_show]
+            numvideos_to_show = [str(username_dict[user]) for user in users_to_show]
+            links_to_show = ["https://www.tiktok.com/" + user for user in
+                             users_to_show]
+
+            df2 = pd.DataFrame(
+                list(zip(avatars_to_show, users_to_show, numvideos_to_show,
+                         links_to_show)),
+                columns=["avatar", "username", "# of videos", "link"]
+            )
+
+
+
+
+            st.header("**most frequent hashtags:**")
+
+            col1a,col2a,col3a = st.columns([0.33,0.33,0.33])
+            # col1a.subheader(f"🥇")
+            # col2a.subheader(f"🥈")
+            # col3a.subheader(f"🥉")
+            col1a.subheader(f"🥇:gray[{hashtags_to_show[0]}]")
+            col2a.subheader(f"🥈:gray[{hashtags_to_show[1]}]")
+            col3a.subheader(f"🥉:gray[{hashtags_to_show[2]}]")
+            col1a.write(f"**{hashtag_counts_to_show[0]} videos**")
+            col2a.write(f"**{hashtag_counts_to_show[1]} videos**")
+            col3a.write(f"**{hashtag_counts_to_show[2]} videos**")
+
+            st.write("&nbsp;")
+
+            st.dataframe(df1, hide_index=True, use_container_width=True)
+
+            st.divider()
+
+            st.header("**most frequent users:**")
+
+            col1,col2,col3 = st.columns(3)
+            col1.markdown('''
+            <a href="''' + links_to_show[0] +'''">
+            <img class="circle-image" src="''' + avatars_to_show[0] + ''''">
+            </a>''',unsafe_allow_html=True,
+            )
+            col2.markdown('''
+            <a href="''' + links_to_show[1] +'''">
+            <img class="circle-image" src="''' + avatars_to_show[1] + ''''">
+            </a>''',unsafe_allow_html=True,
+                          )
+            col3.markdown('''
+            <a href="''' + links_to_show[2] +'''">
+            <img class="circle-image" src="''' + avatars_to_show[2] + ''''">
+            </a>''',unsafe_allow_html=True,
+            )
+
+            col1.subheader(f"🥇:gray[{users_to_show[0]}]")
+            col2.subheader(f"🥈:gray[{users_to_show[1]}]")
+            col3.subheader(f"🥉:gray[{users_to_show[2]}]")
+            # col1.markdown('''
+            # <h4>🥇'''+
+            #               users_to_show[0] + '''
+            # </h4>''',unsafe_allow_html=True,
+            #               )
+            # col2.markdown('''
+            # <h4>🥈'''+
+            #               users_to_show[1] + '''
+            # </h4>''',unsafe_allow_html=True,
+            #               )
+            # col3.markdown('''
+            # <h4>🥉'''+
+            #               users_to_show[2] + '''
+            # </h4>''',unsafe_allow_html=True,
+            #               )
+            col1.write(f"**{numvideos_to_show[0]} videos**")
+            col2.write(f"**{numvideos_to_show[1]} videos**")
+            col3.write(f"**{numvideos_to_show[2]} videos**")
+
+            st.write(" ")
+
+
+            st.dataframe(df2, hide_index=True,
+                         column_config={"link": st.column_config.LinkColumn("Link"),
+                                        "avatar": st.column_config.ImageColumn()},
+                         use_container_width=True)
+
+            st.divider()
+
+            if isinstance(gemini_response, Exception):
+              st.error(
+                  f'**👾 there was an unexpected error generating your AI analysis. check the "help" section for more info:**\n\n:red[`{str(gemini_response)}`]')
+            else:
+              st.header("**🖨️ ai analysis:**")
+              prefix = "\> "
+              formatted_response = re.sub(r'(^|\n\n)(\S)', rf'\1{prefix}\2', gemini_response)
+              st.write_stream(stream_data(formatted_response))
+      except zipfile.BadZipFile:
+        st.error("**❌ the uploaded file is not a valid zip archive.**")
