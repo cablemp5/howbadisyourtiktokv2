@@ -1,18 +1,18 @@
-#🤢 how bad is your tiktok?
+# 🤢 how bad is your tiktok?
 
-<p align="center">
+<p align="left">
   <a href="https://github.com/cablemp5/howbadisyourtiktokv1"><img src="https://img.shields.io/github/languages/code-size/cablemp5/howbadisyourtiktokv1" alt="Github Repo"></a>
   <a href="https://github.com/cablemp5/howbadisyourtiktokv1"><img src="https://img.shields.io/badge/python-3.9.13-blue?logo=python" alt="Python"></a>
   <a href="https://github.com/cablemp5/howbadisyourtiktokv1"><img src="https://img.shields.io/badge/status-up-green" alt="Website Status"></a>
 <p/>
   
-<p align="center">
+<p align="left">
   <a href="https://github.com/cablemp5/howbadisyourtiktokv1"><img src="https://img.shields.io/github/license/cablemp5/howbadisyourtiktokv1" alt="License"></a>
   <a href="https://github.com/cablemp5/howbadisyourtiktokv1"><img src="https://img.shields.io/github/issues/cablemp5/howbadisyourtiktokv1" alt="Issues"></a>
   <a href="https://github.com/cablemp5/howbadisyourtiktokv1/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen" alt="Pull Requests"></a>
 <p/>
 
-<p align="center">
+<p align="left">
   <a href="#overview">Overview</a>
   •
   <a href="#usage">Usage</a>
@@ -28,13 +28,9 @@
 
 Curious what A.I. really thinks of your TikTok feed? This self-proclaimed "content-connoisseur" will judge your liked videos and provide a brutally honest—and painfully accurate—assessment of your digital footprint.
 
-[https://howbadisyourtiktok.streamlit.app/](https://howbadisyourtiktokv2.streamlit.app/)
-
 ## Usage
 
-Check out the site and follow the instructions [here!](https://howbadisyourtiktokv2.streamlit.app/)
-
-<img src="https://i.postimg.cc/TwB0Pyj1/image-1.png" alt="Demo" width="600"/>
+Check out the site and follow the instructions [here!](https://howbadisyourtiktokv2.streamlit.app/). If the app is asleep, just wake it up.
 
 ## Technologies
 
